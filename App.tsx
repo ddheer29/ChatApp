@@ -1,13 +1,16 @@
-import { SafeAreaView, StyleSheet, Text, View } from 'react-native'
+import { SafeAreaView, StatusBar, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { Provider } from 'react-redux'
 import { store } from './src/redux/store'
 import AppNavigator from './src/navigation/AppNavigator'
+import { Colors } from './src/utils/Colors'
 
 const App = () => {
   return (
     <Provider store={store}>
-      <AppNavigator />
+      <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
+        <AppNavigator />
+      </SafeAreaView>
     </Provider>
   )
 }

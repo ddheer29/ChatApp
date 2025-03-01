@@ -1,22 +1,33 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { SafeAreaView, StyleSheet, Text, View } from 'react-native'
 import React, { use, useEffect } from 'react'
-import { navigate } from '../utils/NavigationUtil'
+import { navigate, resetAndNavigate } from '../utils/NavigationUtil'
 
 const SplashScreen = () => {
 
   useEffect(() => {
     setTimeout(() => {
-      navigate("SetUsernameScreen");
-    }, 3000)
+      resetAndNavigate("SetUsernameScreen");
+    }, 700)
   }, [])
 
   return (
-    <View>
-      <Text>Chat App</Text>
+    <View style={styles.container}>
+      <Text style={styles.logoText}>Chat App</Text>
     </View>
   )
 }
 
 export default SplashScreen
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  logoText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginTop: 10
+  }
+})

@@ -16,7 +16,12 @@ const AppNavigator = () => {
     <NavigationContainer ref={navigationRef}>
       <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="SplashScreen">
         <Stack.Screen name="SplashScreen" component={SplashScreen} />
-        <Stack.Screen name="SetUsernameScreen" component={SetUsernameScreen} />
+        <Stack.Screen
+          name="SetUsernameScreen"
+          component={SetUsernameScreen}
+          options={{
+            animation: 'fade'
+          }} />
         <Stack.Screen name="RoomsListScreen" component={RoomsListScreen} />
         <Stack.Screen name="CreateRoomScreen" component={CreateRoomScreen} />
         <Stack.Screen name="ChatSpecificScreen" component={ChatSpecificScreen} />
