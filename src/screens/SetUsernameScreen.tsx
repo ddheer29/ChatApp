@@ -9,6 +9,7 @@ import { Colors } from '../utils/Colors';
 const SetUsernameScreen = () => {
   const [username, setUsernameInput] = useState("");
   const dispatch = useDispatch();
+  const [inputFieldOnFocus, setInputFieldOnFocus] = useState(false);
 
   const handleSetUsername = async () => {
     try {
@@ -28,9 +29,17 @@ const SetUsernameScreen = () => {
         Enter Username:
       </Text>
       <TextInput
-        style={styles.input}
+        style={[styles.input, {
+          borderColor: inputFieldOnFocus ? Colors.mychatbgColor : '#ccc',
+          borderWidth: inputFieldOnFocus ? 3 : 1
+        }]}
         value={username}
         onChangeText={setUsernameInput}
+        placeholder='Enter you Username'
+        placeholderTextColor={'gray'}
+        cursorColor={Colors.mychatbgColor}
+        onFocus={() => setInputFieldOnFocus(true)}
+        onBlur={() => setInputFieldOnFocus(false)}
       />
       <TouchableOpacity
         onPress={handleSetUsername}

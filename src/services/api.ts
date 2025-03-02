@@ -10,7 +10,9 @@ export const setUsernameAPI = async (username: string) => {
 };
 
 export const getRoomsAPI = async () => {
+  console.log('here we are calling all the rooms: ', `${BASE_URL}/chat/rooms`);
   const response = await axios.get(`${BASE_URL}/chat/rooms`);
+  console.log('🚀 ~ getRoomsAPI ~ response:', response.data);
   return response.data;
 };
 

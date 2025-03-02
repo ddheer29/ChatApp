@@ -1,4 +1,4 @@
-import { ActivityIndicator, Button, FlatList, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, Button, FlatList, Platform, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { navigate } from '../utils/NavigationUtil'
 import { RootState } from '../redux/store';
@@ -22,16 +22,18 @@ const RoomsListScreen = () => {
     try {
       setLoading(true);
       const data = await getRoomsAPI();
-      // console.log("🚀 ~ fetchRooms ~ data:", JSON.stringify(data, null, 2))
+      console.log("🚀 ~ fetchRooms ~ data:", JSON.stringify(data, null, 2))
       setRooms(data);
       setLoading(false);
     } catch (error) {
-      console.error("Error fetching rooms:", error);
+      console.log("Error fetching rooms:", error);
     }
   };
 
   return (
     <View style={styles.container}>
+      <StatusBar barStyle="dark-content" backgroundColor="#fff" />
+      {Platform.OS === 'android' && <View style={{ height: 50 }} />}
       <Header title='Available Rooms' displayAddIcon={true} showBackBtn={false} />
       {
         loading ? (

@@ -9,6 +9,7 @@ import { getMessagesAPI } from '../services/api';
 
 const ChatSpecificScreen: React.FC = () => {
   const route = useRoute();
+  const isAndroid = Platform.OS === 'android';
   const { roomId, roomName, username } = route.params as RouteParams;
   console.log("🚀 ~ ChatSpecificScreen ~ roomName:", roomName);
 
@@ -155,6 +156,7 @@ const ChatSpecificScreen: React.FC = () => {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Colors.bgColor }}>
+      {isAndroid && <View style={{ height: 50 }} />}
       <View style={styles.container}>
 
         <Header
@@ -196,6 +198,7 @@ const ChatSpecificScreen: React.FC = () => {
           </TouchableOpacity>
         </Animated.View>
       </View>
+      {isAndroid && <View style={{ height: 50 }} />}
     </SafeAreaView>
   );
 };

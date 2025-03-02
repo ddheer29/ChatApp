@@ -1,4 +1,4 @@
-import { Button, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Button, Platform, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
 import { goBack } from '../utils/NavigationUtil';
 import { createRoomAPI } from '../services/api';
@@ -19,6 +19,7 @@ const CreateRoomScreen = () => {
 
   return (
     <View style={styles.container}>
+      {Platform.OS === 'android' && <View style={{ height: 50 }} />}
       <Header title='Create a New Room' displayAddIcon={true} />
       <View style={styles.container2}>
         <Text
