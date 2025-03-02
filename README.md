@@ -44,29 +44,26 @@ A real-time chat application built using **React Native**, **WebSockets**, and *
 
 ### 1️⃣ **Clone the Repository**
 ```sh
-git clone https://github.com/yourusername/react-native-chat-app.git
-cd react-native-chat-app
+git clone https://github.com/ddheer29/ChatApp.git
+cd ChatApp
 ```
 
 ### 2️⃣ **Install Dependencies**
 ```sh
+npm install
 yarn install
 ```
 
-### 3️⃣ **Start the Server (Node.js WebSocket Server Required)**
-> Make sure your WebSocket backend is running before starting the app.
-```sh
-node server.js
-```
-
-### 4️⃣ **Run the App**
+### 3️⃣ **Run the App**
 - **For Android**
   ```sh
   npx react-native run-android
   ```
 - **For iOS** (Mac Only, requires Xcode)
   ```sh
-  cd ios && pod install && cd ..
+  cd ios
+  pod install
+  cd ..
   npx react-native run-ios
   ```
 
