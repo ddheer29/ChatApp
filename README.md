@@ -9,7 +9,6 @@ A real-time chat application built using **React Native**, **WebSockets**, and *
 - User Authentication (Username-based)
 - Create and Join Chat Rooms
 - Real-time Messaging with WebSockets
-- Persistent Message Storage
 - Navigation with React Navigation
 - State Management with Redux
 
@@ -23,7 +22,7 @@ A real-time chat application built using **React Native**, **WebSockets**, and *
 │   │   ├── api.ts
 │   │   ├── socket.ts
 │   ├── components
-│   │   ├── ChatMessage.tsx
+│   │   ├── Header.tsx
 │   ├── navigation
 │   │   ├── AppNavigator.tsx
 │   ├── redux
@@ -32,7 +31,8 @@ A real-time chat application built using **React Native**, **WebSockets**, and *
 │   ├── screens
 │   │   ├── RoomsListScreen.tsx
 │   │   ├── CreateRoomScreen.tsx
-│   │   ├── ChatScreen.tsx
+│   │   ├── ChatSpecificScreen.tsx
+│   │   ├── SetUserNameScreen.tsx
 │   ├── App.tsx
 ├── package.json
 └── README.md
