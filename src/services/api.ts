@@ -20,11 +20,6 @@ export const createRoomAPI = async (roomName: string) => {
 };
 
 export const getMessagesAPI = async (roomId: string) => {
-  console.log('getMessagesAPI: ', `${BASE_URL}/chat/rooms/${roomId}/messages`);
   const response = await axios.get(`${BASE_URL}/chat/rooms/${roomId}/messages`);
-  console.log(
-    '🚀 ~ getMessagesAPI ~ response:',
-    JSON.stringify(response.data, null, 2),
-  );
   return response.data;
 };

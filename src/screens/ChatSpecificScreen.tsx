@@ -5,6 +5,7 @@ import axios from 'axios';
 import SendIcon from '../assets/SendIcon';
 import Header from '../components/Header';
 import { Colors } from '../utils/Colors';
+import { getMessagesAPI } from '../services/api';
 
 const ChatSpecificScreen: React.FC = () => {
   const route = useRoute();
@@ -22,8 +23,9 @@ const ChatSpecificScreen: React.FC = () => {
 
   const fetchMessages = async (): Promise<void> => {
     try {
-      const response = await axios.get(`https://chat-api-k4vi.onrender.com/chat/rooms/${roomId}/messages`);
-      const data = response.data;
+      // const response = await axios.get(`https://chat-api-k4vi.onrender.com/chat/rooms/${roomId}/messages`);
+      const data = await getMessagesAPI(roomId);
+      // const data = response.data;
       const sortedMessages = data.sort(
         (a: Message, b: Message) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
       );

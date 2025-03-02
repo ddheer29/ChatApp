@@ -1,8 +1,9 @@
-import { Button, SafeAreaView, StyleSheet, Text, TextInput, View } from 'react-native'
+import { Button, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
 import { goBack } from '../utils/NavigationUtil';
 import { createRoomAPI } from '../services/api';
 import Header from '../components/Header';
+import { Colors } from '../utils/Colors';
 
 const CreateRoomScreen = () => {
   const [roomName, setRoomName] = useState("");
@@ -20,13 +21,35 @@ const CreateRoomScreen = () => {
     <View style={styles.container}>
       <Header title='Create a New Room' displayAddIcon={true} />
       <View style={styles.container2}>
+        <Text
+          style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 6, width: '80%' }}
+        >
+          Enter Room Name:
+        </Text>
         <TextInput
           style={styles.input}
           placeholder="Room Name"
           value={roomName}
+          placeholderTextColor={'gray'}
           onChangeText={setRoomName}
         />
-        <Button title="Create Room" onPress={handleCreateRoom} />
+        <TouchableOpacity
+          onPress={handleCreateRoom}
+          style={{
+            marginVertical: 10,
+            padding: 10,
+            backgroundColor: Colors.highlight,
+            borderRadius: 5,
+            width: "80%",
+            alignItems: "center",
+          }}
+        >
+          <Text style={{
+            fontSize: 16,
+            fontWeight: 'bold',
+            color: "#fff",
+          }}>Create Room</Text>
+        </TouchableOpacity>
       </View>
     </View>
   )
@@ -37,7 +60,8 @@ export default CreateRoomScreen
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
+    backgroundColor: '#fff'
   },
   container2: {
     flex: 1,
@@ -48,6 +72,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     width: "80%",
     padding: 10,
-    marginVertical: 10
+    marginVertical: 10,
+    borderRadius: 5,
   },
 });

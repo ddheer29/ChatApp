@@ -51,7 +51,7 @@ const RoomsListScreen = () => {
                   style={{
                     width: '50',
                     height: '50',
-                    backgroundColor: '#fff',
+                    backgroundColor: Colors.otherschatbgColor,
                     alignItems: 'center',
                     justifyContent: 'center',
                     borderRadius: 100,
@@ -79,13 +79,15 @@ const styles = StyleSheet.create({
   },
   roomItem: {
     paddingHorizontal: 16,
-    backgroundColor: Colors.otherschatbgColor,
+    backgroundColor: '#fff',
     marginVertical: 1,
     borderRadius: 5,
     paddingVertical: 18,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12
+    gap: 18,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.otherschatbgColor
   },
   roomName: {
     fontSize: 16,
