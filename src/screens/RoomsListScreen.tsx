@@ -6,6 +6,8 @@ import { useSelector } from 'react-redux';
 import { getRoomsAPI } from '../services/api';
 import BackArrowSVG from '../assets/BackArrow';
 import Header from '../components/Header';
+import { Colors } from '../utils/Colors';
+import RoomIcon from '../assets/GroupIIcon';
 
 const RoomsListScreen = () => {
   const [rooms, setRooms] = useState<{ id: string; name: string }[]>([]);
@@ -45,6 +47,18 @@ const RoomsListScreen = () => {
                 style={styles.roomItem}
                 onPress={() => navigate("ChatSpecificScreen", { roomId: item.id, username, roomName: item.name })}
               >
+                <View
+                  style={{
+                    width: '50',
+                    height: '50',
+                    backgroundColor: '#fff',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderRadius: 100,
+                  }}
+                >
+                  <RoomIcon />
+                </View>
                 <Text style={styles.roomName}>{item.name}</Text>
               </TouchableOpacity>
             )}
@@ -60,13 +74,18 @@ export default RoomsListScreen
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
+    backgroundColor: "#fff"
   },
   roomItem: {
-    padding: 15,
-    backgroundColor: "#E6E6FA",
-    marginVertical: 5,
-    borderRadius: 5
+    paddingHorizontal: 16,
+    backgroundColor: Colors.otherschatbgColor,
+    marginVertical: 1,
+    borderRadius: 5,
+    paddingVertical: 18,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12
   },
   roomName: {
     fontSize: 16,

@@ -1,41 +1,32 @@
-import { Animated, Button, FlatList, Keyboard, Platform, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import React, { useEffect, useRef, useState } from 'react'
+import { Animated, FlatList, Keyboard, Platform, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
 import { useRoute } from '@react-navigation/native';
-import { getMessagesAPI } from '../services/api';
-import { createSocket } from '../services/socket';
+import axios from 'axios';
 import SendIcon from '../assets/SendIcon';
 import Header from '../components/Header';
-import axios from 'axios';
 import { Colors } from '../utils/Colors';
 
-// interface Message {
-//   id: string;
-//   content: string;
-//   username: string;
-//   created_at: string;
-//   room_id: string;
-// }
-
-const ChatSpecificScreen = () => {
+const ChatSpecificScreen: React.FC = () => {
   const route = useRoute();
-  const { roomId, roomName, username } = route.params as { roomId: string; roomName: string; username: string };
-  console.log("🚀 ~ ChatSpecificScreen ~ roomName:", roomName)
+  const { roomId, roomName, username } = route.params as RouteParams;
+  console.log("🚀 ~ ChatSpecificScreen ~ roomName:", roomName);
 
-  const [messages, setMessages] = useState([]);
-  const [newMessage, setNewMessage] = useState('');
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [newMessage, setNewMessage] = useState<string>('');
   const ws = useRef<WebSocket | null>(null);
-  const retryAttempts = useRef(0);
-  const flatListRef = useRef<FlatList>(null);
-  const [keyboardHeight] = useState(new Animated.Value(0));
-  const [iskeyboardOpen, setIskeyboardOpen] = useState(false);
+  const retryAttempts = useRef<number>(0);
+  const flatListRef = useRef<FlatList<Message> | null>(null);
+  const [keyboardHeight] = useState<Animated.Value>(new Animated.Value(0));
+  const [iskeyboardOpen, setIskeyboardOpen] = useState<boolean>(false);
+  const [inputFieldOnFocus, setInputFieldOnFocus] = useState(false);
 
-
-
-  const fetchMessages = async () => {
+  const fetchMessages = async (): Promise<void> => {
     try {
       const response = await axios.get(`https://chat-api-k4vi.onrender.com/chat/rooms/${roomId}/messages`);
       const data = response.data;
-      const sortedMessages = data.sort((a: Message, b: Message) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
+      const sortedMessages = data.sort(
+        (a: Message, b: Message) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+      );
       console.log(JSON.stringify(sortedMessages, null, 2));
       setMessages(sortedMessages);
       setTimeout(() => flatListRef.current?.scrollToEnd({ animated: true }), 100);
@@ -44,7 +35,7 @@ const ChatSpecificScreen = () => {
     }
   };
 
-  const connectWebSocket = () => {
+  const connectWebSocket = (): void => {
     const wsUrl = `wss://chat-api-k4vi.onrender.com/ws/${roomId}/${username}`;
     console.log('Connecting to WebSocket:', wsUrl);
 
@@ -55,13 +46,18 @@ const ChatSpecificScreen = () => {
       retryAttempts.current = 0;
     };
 
-    ws.current.onmessage = (event) => {
+    ws.current.onmessage = (event: WebSocketMessageEvent) => {
       try {
         const messageData = JSON.parse(event.data);
         if (messageData.event === 'message') {
           setMessages((prevMessages) => [
             ...prevMessages,
-            { id: Date.now().toString(), content: messageData.content, username: messageData.sender, created_at: new Date().toISOString() },
+            {
+              id: Date.now().toString(),
+              content: messageData.content,
+              username: messageData.sender,
+              created_at: new Date().toISOString()
+            },
           ]);
           setTimeout(() => flatListRef.current?.scrollToEnd({ animated: true }), 100);
         }
@@ -70,7 +66,7 @@ const ChatSpecificScreen = () => {
       }
     };
 
-    ws.current.onerror = (error) => {
+    ws.current.onerror = (error: Event) => {
       console.error('❌ WebSocket error:', error);
     };
 
@@ -83,7 +79,7 @@ const ChatSpecificScreen = () => {
     };
   };
 
-  const sendMessage = () => {
+  const sendMessage = (): void => {
     if (newMessage.trim() === '' || !ws.current || ws.current.readyState !== WebSocket.OPEN) return;
 
     const messagePayload = {
@@ -94,17 +90,21 @@ const ChatSpecificScreen = () => {
     ws.current.send(JSON.stringify(messagePayload));
     setMessages((prevMessages) => [
       ...prevMessages,
-      { id: Date.now().toString(), content: newMessage, username: username, created_at: new Date().toISOString() },
+      {
+        id: Date.now().toString(),
+        content: newMessage,
+        username: username,
+        created_at: new Date().toISOString()
+      },
     ]);
     setNewMessage('');
     setTimeout(() => flatListRef.current?.scrollToEnd({ animated: true }), 100);
   };
 
-  const renderItem = ({ item }) => (
+  const renderItem = ({ item }: { item: Message }) => (
     <View style={[styles.messageContainer, item.username === username ? styles.myMessage : styles.otherMessage]}>
       <Text style={styles.messageSender}>{item.username === username ? 'You' : item.username}</Text>
       <Text style={styles.messageText}>{item.content}</Text>
-      {/* <Text style={styles.messageTimestamp}>{timeAgo(new Date(item.timestamp))}</Text> */}
     </View>
   );
 
@@ -166,6 +166,7 @@ const ChatSpecificScreen = () => {
           renderItem={renderItem}
           contentContainerStyle={styles.messagesList}
           onContentSizeChange={() => flatListRef.current?.scrollToEnd({ animated: true })}
+          ref={flatListRef}
         />
 
         <Animated.View style={[
@@ -173,11 +174,17 @@ const ChatSpecificScreen = () => {
           { paddingBottom: keyboardHeight, bottom: iskeyboardOpen ? -10 : 0 }
         ]}>
           <TextInput
-            style={styles.input}
+            style={[styles.input, {
+              borderColor: inputFieldOnFocus ? Colors.mychatbgColor : '#ccc',
+              borderWidth: inputFieldOnFocus ? 3 : 1
+            }]}
             value={newMessage}
             onChangeText={setNewMessage}
             placeholder="Type a message..."
             placeholderTextColor="gray"
+            cursorColor={Colors.mychatbgColor}
+            onFocus={() => setInputFieldOnFocus(true)}
+            onBlur={() => setInputFieldOnFocus(false)}
           />
 
           <TouchableOpacity
@@ -188,10 +195,10 @@ const ChatSpecificScreen = () => {
         </Animated.View>
       </View>
     </SafeAreaView>
-  )
-}
+  );
+};
 
-export default ChatSpecificScreen
+export default ChatSpecificScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -203,7 +210,6 @@ const styles = StyleSheet.create({
   roomName: {
     fontSize: 18,
     fontWeight: 'bold',
-    // color: 'white',
     flex: 1,
     textAlign: 'center'
   },
@@ -246,7 +252,7 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     flexDirection: 'row',
-    padding: 10,
+    padding: 20,
     paddingVertical: 20,
     backgroundColor: 'white',
     borderTopWidth: 1,
@@ -259,11 +265,12 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    height: 40,
+    height: 48,
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 20,
-    paddingHorizontal: 15
+    paddingHorizontal: 15,
+    // paddingVertical: 12,
   },
   button: {
     backgroundColor: "#D8BFD8",
