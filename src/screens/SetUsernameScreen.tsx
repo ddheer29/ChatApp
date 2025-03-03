@@ -1,4 +1,4 @@
-import { Button, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, Button, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { setUsernameAPI } from '../services/api';
@@ -10,11 +10,14 @@ const SetUsernameScreen = () => {
   const [username, setUsernameInput] = useState("");
   const dispatch = useDispatch();
   const [inputFieldOnFocus, setInputFieldOnFocus] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleSetUsername = async () => {
     try {
+      setLoading(true);
       await setUsernameAPI(username);
       dispatch(setUsername(username));
+      setLoading(false);
       replace("RoomsListScreen");
     } catch (error) {
       console.error("Error setting username:", error);
@@ -58,6 +61,21 @@ const SetUsernameScreen = () => {
           color: "#fff",
         }}>Continue</Text>
       </TouchableOpacity>
+      <View
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          top: 0,
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: 'rgba(0,0,0,0.2)',
+          display: loading ? 'flex' : 'none',
+        }}
+      >
+        <ActivityIndicator size="large" color={Colors.highlight} />
+      </View>
     </View>
   )
 }

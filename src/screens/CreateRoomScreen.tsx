@@ -1,4 +1,4 @@
-import { Button, Platform, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, Button, Platform, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
 import { goBack } from '../utils/NavigationUtil';
 import { createRoomAPI } from '../services/api';
@@ -7,10 +7,13 @@ import { Colors } from '../utils/Colors';
 
 const CreateRoomScreen = () => {
   const [roomName, setRoomName] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleCreateRoom = async () => {
     try {
+      setLoading(true);
       await createRoomAPI(roomName);
+      setLoading(false);
       goBack();
     } catch (error) {
       console.error("Error creating room:", error);
@@ -51,6 +54,21 @@ const CreateRoomScreen = () => {
             color: "#fff",
           }}>Create Room</Text>
         </TouchableOpacity>
+      </View>
+      <View
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          top: 0,
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: 'rgba(0,0,0,0.1)',
+          display: loading ? 'flex' : 'none',
+        }}
+      >
+        <ActivityIndicator size="large" color={Colors.highlight} />
       </View>
     </View>
   )

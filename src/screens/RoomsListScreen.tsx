@@ -8,15 +8,12 @@ import BackArrowSVG from '../assets/BackArrow';
 import Header from '../components/Header';
 import { Colors } from '../utils/Colors';
 import RoomIcon from '../assets/GroupIIcon';
+import { useFocusEffect } from '@react-navigation/native';
 
 const RoomsListScreen = () => {
   const [rooms, setRooms] = useState<{ id: string; name: string }[]>([]);
   const [loading, setLoading] = useState(false);
   const username = useSelector((state: RootState) => state.user.username);
-
-  useEffect(() => {
-    fetchRooms();
-  }, []);
 
   const fetchRooms = async () => {
     try {
@@ -29,6 +26,12 @@ const RoomsListScreen = () => {
       console.log("Error fetching rooms:", error);
     }
   };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchRooms();
+    }, [])
+  );
 
   return (
     <View style={styles.container}>
